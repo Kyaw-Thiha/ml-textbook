@@ -6,13 +6,12 @@ This is basically trying to find a line of best fit in a multi-dimenensional dat
 
 import numpy as np
 import pandas as pd
-from plotly import colors
 import plotly.graph_objects as go
 
 # |%%--%%| <YskWEeMKcA|WJdsVDiTKZ>
 r"""°°°
 ## 1D-Case
-e_i = y_i - (w.x_i + b)
+$e_i$ = $y_i - (w.x_i + b)$
 where (w.x_i + b) is the predicted y'_i
 
 Then, the energy function is 
@@ -87,4 +86,8 @@ fig.add_trace(
 fig.update_layout(title="Linear Regression (1-Dimension)")
 fig.show()
 
-# |%%--%%| <FGtuKmSZdK|zRSljPcpa9>
+# |%%--%%| <FGtuKmSZdK|VMzPBVIIkw>
+r"""°°°
+Multi-dimensional input
+°°°"""
+# |%%--%%| <VMzPBVIIkw|zRSljPcpa9>
