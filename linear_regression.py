@@ -12,10 +12,10 @@ import plotly.graph_objects as go
 r"""°°°
 ## 1D-Case
 $e_i$ = $y_i - (w.x_i + b)$
-where (w.x_i + b) is the predicted y'_i
+where $(w.x_i + b)$ is the predicted $y'_i$
 
 Then, the energy function is 
-E(w, b) = summation of (e_i)^2
+E(w, b) = $\sum_{i=1} (e_i)^2$
 °°°"""
 # |%%--%%| <WJdsVDiTKZ|w753NQfnjj>
 
@@ -90,4 +90,55 @@ fig.show()
 r"""°°°
 Multi-dimensional input
 °°°"""
-# |%%--%%| <VMzPBVIIkw|zRSljPcpa9>
+# |%%--%%| <VMzPBVIIkw|T5ovjlz7SQ>
+
+input_dimension = 2
+points_num = 10
+low = 0
+high = 5
+x = np.random.randint(low=low, high=high, size=(points_num, input_dimension))
+# y = np.random.randint(low=low, high=high, size=(points_num, 1))
+y = np.random.randint(low=low, high=high, size=points_num)
+print(f"x: {x}")
+print(f"y: {y}")
+
+new_column = np.ones((points_num, 1), dtype=int)
+x_tilde = np.hstack([x, new_column])
+# y_tilde = np.hstack([y, new_column])
+print(f"x_tilde: {x_tilde}")
+# print(f"y_tilde: {y_tilde}")
+
+x_transpose = np.transpose(x_tilde)
+x_pseudoinverse = np.linalg.inv((x_transpose @ x_tilde)) @ x_transpose
+w_tilde = x_pseudoinverse @ y
+print(f"w_tilde: {w_tilde}")
+
+w_0 = w_tilde[0]
+w_1 = w_tilde[1]
+b = w_tilde[-1]
+
+# |%%--%%| <T5ovjlz7SQ|3vKRjQy6EZ>
+
+x1_coord = list(range(low, high))
+x2_coord = list(range(low, high))
+x1_best, x2_best = np.meshgrid(x1_coord, x2_coord)
+y_best = w_0 * x1_best + w_1 * x2_best + b
+
+fig = go.Figure()
+fig.add_trace(go.Scatter3d(x=x[:, 0], y=x[:, 1], z=y, mode="markers", name="points"))
+fig.add_trace(
+    go.Surface(
+        x=x1_best,
+        y=x2_best,
+        z=y_best,
+        name=f"fit: y={w_0:.2f}+{w_1:.2f}x1+{b:.2f}x2",
+        opacity=0.6,
+    )
+)
+fig.update_layout(
+    scene=dict(xaxis_title="x1", yaxis_title="x2", zaxis_title="y"),
+    title="3D points + fitted plane",
+)
+fig.show()
+
+# |%%--%%| <3vKRjQy6EZ|zRSljPcpa9>
